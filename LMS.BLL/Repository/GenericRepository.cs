@@ -40,15 +40,7 @@ namespace LMS.BLL.Repository
             await _db.SaveChangesAsync();
             return entity;
         }
-        public async Task<bool> DeleteAsync(Expression<Func<T, bool>> filter)
-        {
-            var entity = await GetByAsync(filter);
-            if (entity == null)
-                return false;
-            _db.Set<T>().Remove(entity);
-            await _db.SaveChangesAsync();
-            return true;
-        }
+        
     }
 
     public interface IGenericRepository<T> where T : class, new()
@@ -61,7 +53,5 @@ namespace LMS.BLL.Repository
         public Task<T> CreateAsync(T entity);
         // Update
         public Task<T> UpdateAsync(T entity);
-        // Delete
-        public Task<bool> DeleteAsync(Expression<Func<T, bool>> filter);
     }
 }
