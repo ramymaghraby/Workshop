@@ -6,9 +6,10 @@ using System.Text;
 
 namespace LMS.DAL.Entity
 {
+    [Table("Members")]
     public class Member : BaseEntity
     {
-        [Column("MemberName", TypeName = "nvarchar(50)")]
+        [Column("MemberName"), StringLength(50)]
         public string Name { get; set; } = "";
         public string Email { get; set; } = "";
         [StringLength(14)]

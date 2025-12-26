@@ -8,7 +8,7 @@ namespace LMS.DAL.Entity
     public abstract class BaseEntity
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedOn { get; set; }
     }

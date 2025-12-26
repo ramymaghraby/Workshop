@@ -9,9 +9,9 @@ namespace LMS.DAL.Entity
     [Table("Books")]
     public class Book : BaseEntity
     {
-        [Column("BookTitle", TypeName = "NVARCHAR(80)")]
+        [Column("BookTitle"),StringLength(50)]
         public string Title { get; set; } = "";
-        [Column("BookAuthor", TypeName = "NVARCHAR(80)")]
+        [Column("BookAuthor"), StringLength(80)]
         public string Author { get; set; } = "";
         [StringLength(13)]
         public string ISBN { get; set; } = "";
