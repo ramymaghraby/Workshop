@@ -1,4 +1,5 @@
-﻿using LMS.BLL.Model;
+﻿using LMS.BLL.Helper;
+using LMS.BLL.Model;
 using LMS.BLL.Repository;
 using LMS.DAL.Entity;
 using System;
@@ -19,67 +20,108 @@ namespace LMS.BLL.Service
 
         public async Task<CategoryDTO> CreateCategory(CategoryDTO categoryDTO)
         {
-            var category = new Category
+            try
             {
-                Name = categoryDTO.Name,
-                Description = categoryDTO.Description
-            };
-            var createdCategory = await _categoryRepository.CreateAsync(category);
-            categoryDTO.Id = createdCategory.Id;
+                var category = new Category
+                {
+                    Name = categoryDTO.Name,
+                    Description = categoryDTO.Description
+                };
+                var createdCategory = await _categoryRepository.CreateAsync(category);
+                categoryDTO.Id = createdCategory.Id;
+
+            }
+            catch (Exception ex)
+            {
+                await CustomExceptionLogger.LogException(ex);
+            }
+            
             return categoryDTO;
         }
         public async Task<bool> DeleteCategory(Expression<Func<Category, bool>> filter)
         {
-            var category = await _categoryRepository.GetByAsync(filter);
-            if (category == null)
+            try
+            {
+                var category = await _categoryRepository.GetByAsync(filter);
+                if (category == null)
+                    return false;
+                category.IsActive = false;
+                await _categoryRepository.UpdateAsync(category);
+            }
+            catch (Exception ex)
+            {
+                await CustomExceptionLogger.LogException(ex);
                 return false;
-            category.IsActive = false;
-            await _categoryRepository.UpdateAsync(category);
+            }
             return true;
         }
         public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync(Expression<Func<Category, bool>> filter)
         {
-            var categories = await _categoryRepository.GetAllAsync(filter);
-            var categoryDTOs = new List<CategoryDTO>();
-            foreach (var category in categories)
+            try
             {
-                categoryDTOs.Add(new CategoryDTO
+                var categories = await _categoryRepository.GetAllAsync(filter);
+                var categoryDTOs = new List<CategoryDTO>();
+                foreach (var category in categories)
+                {
+                    categoryDTOs.Add(new CategoryDTO
+                    {
+                        Id = category.Id,
+                        Name = category.Name,
+                        Description = category.Description
+                    });
+                }
+                return categoryDTOs;
+            }
+            catch (Exception ex)
+            {
+                await CustomExceptionLogger.LogException(ex);
+                return null;
+            }
+        }
+        public async Task<CategoryDTO> GetCategoryByAsync(Expression<Func<Category, bool>> filter)
+        {
+            try
+            {
+                var category = await _categoryRepository.GetByAsync(filter);
+                return new CategoryDTO
                 {
                     Id = category.Id,
                     Name = category.Name,
                     Description = category.Description
-                });
+                };
             }
-            return categoryDTOs;
-        }
-        public async Task<CategoryDTO> GetCategoryByAsync(Expression<Func<Category, bool>> filter)
-        {
-            var category = await _categoryRepository.GetByAsync(filter);
-            return new CategoryDTO
+            catch (Exception ex)
             {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description
-            };
+                await CustomExceptionLogger.LogException(ex);
+                return null;
+            }
         }
         public async Task<CategoryDTO> UpdateCategory(CategoryDTO categoryDTO)
         {
-            var category = new Category
+            try
             {
-                Id = categoryDTO.Id,
-                Name = categoryDTO.Name,
-                Description = categoryDTO.Description
-            };
-            var updatedCategory = await _categoryRepository.UpdateAsync(category);
-            return new CategoryDTO
+                var category = new Category
+                {
+                    Id = categoryDTO.Id,
+                    Name = categoryDTO.Name,
+                    Description = categoryDTO.Description
+                };
+                var updatedCategory = await _categoryRepository.UpdateAsync(category);
+                return new CategoryDTO
+                {
+                    Id = updatedCategory.Id,
+                    Name = updatedCategory.Name,
+                    Description = updatedCategory.Description
+                };
+            }
+            catch (Exception ex)
             {
-                Id = updatedCategory.Id,
-                Name = updatedCategory.Name,
-                Description = updatedCategory.Description
-            };
+                await CustomExceptionLogger.LogException(ex);
+                return null;
+            }
         }
 
-    }
+        }
 
     public interface ICategoryService
     {

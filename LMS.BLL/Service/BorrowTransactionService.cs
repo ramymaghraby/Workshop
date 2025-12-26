@@ -1,4 +1,5 @@
-﻿using LMS.BLL.Model;
+﻿using LMS.BLL.Helper;
+using LMS.BLL.Model;
 using LMS.BLL.Repository;
 using LMS.DAL.Entity;
 using System;
@@ -16,26 +17,42 @@ namespace LMS.BLL.Service
         }
         public async Task<bool> BorrowBookAsync(BorrowTransactionDTO borrowTransactionDTO)
         {
-            var transaction = new BorrowTransaction
+            try
             {
-                BookId = borrowTransactionDTO.BookId,
-                MemberId = borrowTransactionDTO.MemberId,
-                BorrowDate = DateTime.Now,
-                DueDate = borrowTransactionDTO.DueDate,
-                ReturnDate = borrowTransactionDTO.ReturnDate
-                
-            };
-            await _borrowTransactionRepository.CreateAsync(transaction);
-            return true;
+                var transaction = new BorrowTransaction
+                {
+                    BookId = borrowTransactionDTO.BookId,
+                    MemberId = borrowTransactionDTO.MemberId,
+                    BorrowDate = DateTime.Now,
+                    DueDate = borrowTransactionDTO.DueDate,
+                    ReturnDate = borrowTransactionDTO.ReturnDate
+
+                };
+                await _borrowTransactionRepository.CreateAsync(transaction);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await CustomExceptionLogger.LogException(ex);
+                return false;
+            }
         }
         public async Task<bool> ReturnBookAsync(BorrowTransactionDTO borrowTransactionDTO)
         {
-            var transaction = await _borrowTransactionRepository.GetByAsync(t => t.BookId == borrowTransactionDTO.BookId && t.MemberId == borrowTransactionDTO.MemberId && t.ReturnDate == borrowTransactionDTO.ReturnDate);
-            if (transaction == null)
+            try
+            {
+                var transaction = await _borrowTransactionRepository.GetByAsync(t => t.BookId == borrowTransactionDTO.BookId && t.MemberId == borrowTransactionDTO.MemberId && t.ReturnDate == borrowTransactionDTO.ReturnDate);
+                if (transaction == null)
+                    return false;
+                transaction.ReturnDate = DateTime.Now;
+                await _borrowTransactionRepository.UpdateAsync(transaction);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await CustomExceptionLogger.LogException(ex);
                 return false;
-            transaction.ReturnDate = DateTime.Now;
-            await _borrowTransactionRepository.UpdateAsync(transaction);
-            return true;
+            }
         }
     }
     public interface IBorrowTransactionService
