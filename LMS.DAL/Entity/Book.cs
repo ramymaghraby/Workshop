@@ -10,18 +10,18 @@ namespace LMS.DAL.Entity
     public class Book : BaseEntity
     {
         [Column("BookTitle", TypeName = "NVARCHAR(80)")]
-        public string Title { get; set; }
+        public string Title { get; set; } = "";
         [Column("BookAuthor", TypeName = "NVARCHAR(80)")]
-        public string Author { get; set; }
+        public string Author { get; set; } = "";
         [StringLength(13)]
-        public string ISBN { get; set; }
+        public string ISBN { get; set; } = "";
         public int PublishedYear { get; set; }
         public int Rate { get; set; }
         public int CategoryId { get; set; }
 
 
         // Navigation Property
-        public Category Category { get; set; }
+        public Category Category { get; set; } = new Category();
         public bool IsAvailable { get; set; }
     }
 }
