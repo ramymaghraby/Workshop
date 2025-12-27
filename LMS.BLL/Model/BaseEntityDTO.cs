@@ -6,9 +6,10 @@ namespace LMS.BLL.Model
 {
     public class BaseEntityDTO
     {
-        public BaseEntityDTO() { 
-            CreatedOn = DateTime.Now;
+        public BaseEntityDTO() 
+        {
             IsActive = true;
+            CreatedOn = DateTime.Now;
         }
         public Guid Id { get; set; }
         public bool IsActive { get; set; }

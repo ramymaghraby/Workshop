@@ -25,7 +25,10 @@ namespace LMS.BLL.Service
                 var category = new Category
                 {
                     Name = categoryDTO.Name,
-                    Description = categoryDTO.Description
+                    Description = categoryDTO.Description,
+                    IsActive = categoryDTO.IsActive,
+                    CreatedOn = categoryDTO.CreatedOn
+                    
                 };
                 var createdCategory = await _categoryRepository.CreateAsync(category);
                 categoryDTO.Id = createdCategory.Id;
@@ -55,7 +58,7 @@ namespace LMS.BLL.Service
             }
             return true;
         }
-        public async Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync(Expression<Func<Category, bool>> filter)
+        public async Task<IEnumerable<CategoryDTO>?> GetAllCategoriesAsync(Expression<Func<Category, bool>> filter)
         {
             try
             {
@@ -78,7 +81,7 @@ namespace LMS.BLL.Service
                 return null;
             }
         }
-        public async Task<CategoryDTO> GetCategoryByAsync(Expression<Func<Category, bool>> filter)
+        public async Task<CategoryDTO?> GetCategoryByAsync(Expression<Func<Category, bool>> filter)
         {
             try
             {
@@ -96,7 +99,7 @@ namespace LMS.BLL.Service
                 return null;
             }
         }
-        public async Task<CategoryDTO> UpdateCategory(CategoryDTO categoryDTO)
+        public async Task<CategoryDTO?> UpdateCategory(CategoryDTO categoryDTO)
         {
             try
             {
@@ -125,10 +128,10 @@ namespace LMS.BLL.Service
 
     public interface ICategoryService
     {
-        public Task<IEnumerable<CategoryDTO>> GetAllCategoriesAsync(Expression<Func<Category, bool>> filter);
-        public Task<CategoryDTO> GetCategoryByAsync(Expression<Func<Category, bool>> filter);
+        public Task<IEnumerable<CategoryDTO>?> GetAllCategoriesAsync(Expression<Func<Category, bool>> filter);
+        public Task<CategoryDTO?> GetCategoryByAsync(Expression<Func<Category, bool>> filter);
         public Task<CategoryDTO> CreateCategory(CategoryDTO categoryDTO);
-        public Task<CategoryDTO> UpdateCategory(CategoryDTO categoryDTO);
+        public Task<CategoryDTO?> UpdateCategory(CategoryDTO categoryDTO);
         public Task<bool> DeleteCategory(Expression<Func<Category, bool>> filter);
 
     }

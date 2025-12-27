@@ -19,9 +19,9 @@ namespace LMS.BLL.Helper
                 writer.WriteLine("********** " + DateTime.Now.ToString() + " **********");
                 while (ex != null)
                 {
-                    writer.WriteLine("Message: " + ex.Message);
-                    writer.WriteLine("StackTrace: " + ex.StackTrace);
-                    writer.WriteLine("InnerException: " + ex.InnerException);
+                    await writer.WriteLineAsync("Message: " + ex.Message);
+                    await writer.WriteLineAsync("StackTrace: " + ex.StackTrace);
+                    await writer.WriteLineAsync("InnerException: " + ex.InnerException);
                 }
                 writer.WriteLine();
             }

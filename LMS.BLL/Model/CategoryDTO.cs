@@ -9,6 +9,7 @@ namespace LMS.BLL.Model
 {
     public class CategoryDTO : BaseEntityDTO
     {
+        
         [StringLength(50, ErrorMessage ="Max length is 50")]
         [Required(ErrorMessage ="Name is required")]
         public string Name { get; set; } = "";

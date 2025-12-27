@@ -16,7 +16,7 @@ namespace LMS.BLL.Service
         {
             _bookRepository = new GenericRepository<Book>();
         }
-        public async Task<BookDTO> CreateBookAsync(BookDTO bookDTO)
+        public async Task<BookDTO?> CreateBookAsync(BookDTO bookDTO)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace LMS.BLL.Service
                 return false;
             }
         }
-        public async Task<IEnumerable<BookDTO>> GetAllBooksAsync(Expression<Func<Book, bool>>? filter = null)
+        public async Task<IEnumerable<BookDTO>?> GetAllBooksAsync(Expression<Func<Book, bool>>? filter = null)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace LMS.BLL.Service
                 return null;
             }
         }
-        public async Task<BookDTO> GetBookByAsync(Expression<Func<Book, bool>> filter)
+        public async Task<BookDTO?> GetBookByAsync(Expression<Func<Book, bool>> filter)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace LMS.BLL.Service
                 return null;
             }
         }
-        public async Task<BookDTO> UpdateBookAsync(BookDTO bookDTO)
+        public async Task<BookDTO?> UpdateBookAsync(BookDTO bookDTO)
         {
             try
             {
@@ -137,10 +137,10 @@ namespace LMS.BLL.Service
     }
     public interface IBookService
     {
-        public Task<BookDTO> CreateBookAsync(BookDTO bookDTO);
+        public Task<BookDTO?> CreateBookAsync(BookDTO bookDTO);
         public Task<bool> DeleteBookAsync(Expression<Func<Book, bool>> filter);
-        public Task<IEnumerable<BookDTO>> GetAllBooksAsync(Expression<Func<Book, bool>>? filter = null);
-        public Task<BookDTO> GetBookByAsync(Expression<Func<Book, bool>> filter);
-        public Task<BookDTO> UpdateBookAsync(BookDTO bookDTO);
+        public Task<IEnumerable<BookDTO>?> GetAllBooksAsync(Expression<Func<Book, bool>>? filter = null);
+        public Task<BookDTO?> GetBookByAsync(Expression<Func<Book, bool>> filter);
+        public Task<BookDTO?> UpdateBookAsync(BookDTO bookDTO);
     }
 }
